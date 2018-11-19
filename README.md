@@ -27,11 +27,13 @@ conn.Send([]byte("欢迎来到中国。"))
 The client will receive a string which is `欢迎来到中国。`
 
 > P.S.:
-> if you think that `[]byte("欢迎来到中国。")` is pretty verbose, you can use `conn.Send("欢迎来到中国。")` directly. WS can identify it and trans theme into `[]byte`. Also, if you send a struct, WS will transform it into JSON format, but you **should marshal string into JSON format if you’d like to send a JSON formatted string to client**.
+> if you think that `[]byte("欢迎来到中国。")` is pretty verbose, you can use `conn.Send("欢迎来到中国。")` directly. WS can identify it and trans them into `[]byte`. Also, if you send a struct, WS will transform it into JSON format, but you **should marshal string into JSON format if you’d like to send a JSON formatted string to client**.
 
 ## Serialise & Deserialise Automatically
 But in most scenarios, we use structured transport structures to communicate. And we may hope multiple sets of business logic with instruction flags and be handled by one socket. Don’t worry, let’s make the code happier.
+
 First of all, define a struct which implemented `ws.Request` interface.
+
 - The WebSocket communication cannot identify the action name by request path after connecting. So, you need to tell WS, which field is the name of action.
 - We considered that operation identifier might just a no meaning field, and your data might storage in an element. So you can tell WS, which field is most important and have to be calculated. Otherwise, you can just return itself to ignore.
 ```
@@ -53,18 +55,24 @@ func (r Request) Body() interface{} {
 	return r.Content
 }
 ```
+
 After that, you can create a special listener using WebSocket:
+
 ```
 s = ws.NewWebSocketService(Request{})
 ```
-The compiler will check whether the strict is valid or not, and you can register your business logic into endpoint which described by `Action() string`.
+
+The compiler will check whether the struct is valid or not, and you can register your business logic into endpoint which described by `Action() string`.
+
 Demo:
+
 ```
 s.RegisterEndpoint("/api/test", ws.Handler(func(conn *ws.Connection, body interface{}) {
 	fmt.Println(body)
 	conn.Send("テスト")
 }))
 ```
+
 This snippet can receive a `Request` entity and give a string back after printing entity on the screen.
 
 > ⚠️ Notice:
