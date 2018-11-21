@@ -2,7 +2,7 @@ package codec
 
 type (
 	CryptoService interface {
-		Encrypt([]byte) ([]byte, error)
+		Encrypt([]byte) []byte
 		Decrypt([]byte) ([]byte, error)
 	}
 

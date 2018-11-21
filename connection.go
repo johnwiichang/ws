@@ -10,10 +10,11 @@ import (
 type (
 	//Connection Customized websocket connection definition based on websocket.Conn which provided by official Google golang tool package
 	Connection struct {
-		conn      *websocket.Conn
-		closed    bool
-		codec     *websocket.Codec
-		onclosing []func()
+		Identifier string
+		conn       *websocket.Conn
+		closed     bool
+		codec      *websocket.Codec
+		onclosing  []func()
 	}
 )
 

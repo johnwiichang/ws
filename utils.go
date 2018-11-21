@@ -9,8 +9,8 @@ import (
 )
 
 type (
-	//Utilities 工具类声明
-	Utilities interface {
+	//utilities 工具类声明
+	utilities interface {
 		DefaultJSONCodec(...codec.CryptoService) *websocket.Codec
 		DefaultByteCodec(...codec.CryptoService) *websocket.Codec
 		CustomizedCodec(codec.MarshalService, ...codec.CryptoService) *websocket.Codec
@@ -22,7 +22,7 @@ type (
 )
 
 //Utils 工具类对象
-var Utils Utilities = util{}
+var Utils utilities = util{}
 
 //DefaultCodec 获取默认编码解码器
 func (u util) DefaultJSONCodec(crypto ...codec.CryptoService) *websocket.Codec {
@@ -54,7 +54,7 @@ func (u util) CustomizedCodec(marshalService codec.MarshalService, cryptoService
 				payloadType = websocket.BinaryFrame
 			}
 			if crypto != nil {
-				crypto.Encrypt(data)
+				data = crypto.Encrypt(data)
 			}
 			return
 		},
