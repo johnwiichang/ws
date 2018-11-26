@@ -51,7 +51,7 @@ func (conn *Connection) Receive(obj interface{}) (err error) {
 }
 
 //RegisterClosingFunc 注册关闭函数
-func (conn *Connection) RegisterClosingFunc(handler func(), identifier ...string) {
+func (conn *Connection) RegisterClosingFunc(handler func()) {
 	conn.onclosing = append(conn.onclosing, handler)
 }
 
